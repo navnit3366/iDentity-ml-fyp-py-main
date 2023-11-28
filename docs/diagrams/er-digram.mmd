@@ -1,0 +1,51 @@
+---
+title: Identity
+---
+erDiagram
+    LocationPermission ||--|{ Location : on
+    Roster ||--|{ Location : on
+    UserAccount ||--o{ LocationPermission : has
+    UserAccount ||--o{ Roster : has
+    UserAccount ||--o{ UserAccountRole : has
+    UserAccountRole ||--|{ Role : has
+
+    Location {
+        int id PK
+        string address
+        string description
+        string email
+        string name
+        string telephone
+    }
+    LocationPermission {
+        int locationId PK
+        int userAccountId PK
+    }
+    Roster {
+        int id PK
+        int locationId FK
+        string signInDateTime
+        string signOutDateTime
+        int userAccountId FK
+    }
+    Role {
+        int id PK
+        string name
+        string description
+    }
+    UserAccount {
+        int id PK
+        string email
+        boolean enabled
+        boolean faceRecognitionEnabled
+        string firstName
+        boolean isTwin
+        string lastName
+        string password
+        string telephone
+        string username
+    }
+    UserAccountRole {
+        int userAccountId PK
+        int roleId PK
+    }

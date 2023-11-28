@@ -1,0 +1,38 @@
+sequenceDiagram
+    Actor admin as Manager
+
+    Actor james as James
+    Actor zsolt as Zsolt
+    Actor bob as Bob
+
+    Participant website as Sign in Computer
+
+    admin->>website: activate sign in computer
+    website->>website: starts login stream
+    website->>website: Indicator(traffic light is green)
+
+    bob->>website: walks up to camera/computer
+    website->>bob: Takes Pic, idenfifes bob, Display result, if not objection, open door
+    website->>website: Indicator(traffic light is red)
+    website->>website: Wait 10 seconds
+    website->>website: Indicator(traffic light is green)
+
+
+    zsolt->>website: walks up to camera/computer
+    website->>zsolt: Takes Pic, identifes incorrectly as bob, Display result, if not objection, open door
+    zsolt->>website: objection
+    zsolt->>website: Manual confirmation of sign in
+    website->>website: Indicator(traffic light is red)
+    website->>website: Wait 10 seconds
+    website->>website: Indicator(traffic light is green)
+
+    james->>website: walks up to camera/computer
+    website->>james: Takes Pic, idenfifes james, Display result, if not objection, open door
+    james->>website: permission diend
+    website->>website: Indicator(traffic light is red)
+    website->>website: Wait 10 seconds
+    website->>website: Indicator(traffic light is green)
+
+
+    admin->>website: deactivates sign in computer
+    website->>website: stops login stream

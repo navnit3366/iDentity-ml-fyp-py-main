@@ -1,0 +1,34 @@
+{% extends "master.html" %}
+{% block title %}
+    {{ location.name }} {{ location_sign_in_date }} Roster
+{% endblock title %}
+{% block content %}
+    <h1>{{ location.name }}</h1>
+    <h2 id="roster-desc">Signed in Users for {{ location_sign_in_date }}</h2>
+
+    {% if roster_list %}
+        <table class="table" aria-describedby="roster-desc">
+            <tr>
+                <th>Username</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Sign in Date/time</th>
+                <th>Sign out Date/time</th>
+            </tr>
+            {% for roster in roster_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'user-account-details' roster.user_account.id %}">{{ roster.user_account.username }}</a>
+                    </td>
+                    <td>{{ roster.user_account.first_name }}</td>
+                    <td>{{ roster.user_account.last_name }}</td>
+                    <td>{{ roster.sign_in_date }}</td>
+                    <td>{{ roster.sign_out_date }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No user sign-ins for this location on {{ location_sign_in_date }}.</p>
+    {% endif %}
+
+{% endblock content %}

@@ -1,0 +1,101 @@
+{% extends "master.html" %}
+{% block title %}
+    {{ location.name }}
+{% endblock title %}
+{% block content %}
+    <h1>{{ location.name }}</h1>
+    <table class="table" aria-describedby="my-desc">
+        <tr>
+            <td>
+                <p id="my-desc">Actions</p>
+            </td>
+            <td>
+                {% if perms.identity.activate_sign_in %}
+                    <a class="btn btn-primary" href="{% url 'sign_in' location.id %}">Activate Sign in</a>
+                {% endif %}
+            </td>
+            <td>
+                {% if perms.identity.activate_sign_out %}
+                    <a class="btn btn-danger" href="{% url 'sign_out' location.id %}">Activate Sign out</a>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+    <h2 id="my-desc">Permitted Users</h2>
+    {% if location.locationpermission_set.all %}
+        <table class="table" aria-describedby="my-desc">
+            <tr>
+                <th>Username</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>
+                    <!--Remove command column -->&nbsp;
+                </th>
+            </tr>
+            {% for location_permission in location.locationpermission_set.all %}
+                <tr>
+                    <td>{{ location_permission.user_account.username }}</td>
+                    <td>{{ location_permission.user_account.first_name }}</td>
+                    <td>{{ location_permission.user_account.last_name }}</td>
+                    <td>{{ location_permission.user_account.email }}</td>
+                    <td>
+                        <a class="btn btn-danger"
+                           href="{% url 'remove-permission' location_permission.location.id location_permission.user_account.id %}">Remove Permission</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No Permissions are set for this location.</p>
+    {% endif %}
+    <h2 id="roster-desc">Signed in Users</h2>
+    {% if location.roster_set.all %}
+        <table class="table" aria-describedby="roster-desc">
+            <tr>
+                <th>Username</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Sign in Date/time</th>
+                <th>
+                    <!--Sign out command column -->&nbsp;
+                </th>
+            </tr>
+            {% for roster in location_active_sign_ins %}
+                <tr>
+                    <td>
+                        <a href="{% url 'user-account-details' roster.user_account.id %}">{{ roster.user_account.username }}</a>
+                    </td>
+                    <td>{{ roster.user_account.first_name }}</td>
+                    <td>{{ roster.user_account.last_name }}</td>
+                    <td>{{ roster.sign_in_date }}</td>
+                    <td>{{ roster.sign_out_date }}</td>
+                    <td>
+                        <a class="btn btn-primary" href="{% url 'force-sign-out' roster.id %}">Sign out</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>
+            No active user sign-ins for this location.
+        </p>
+    {% endif %}
+    <h2 id="day-roster-desc" class="sm">
+        Day Roster Logs
+    </h2>
+    {% if location_day_roster_logs %}
+        <ul class="list-group list-group-horizontal">
+            {% for location_day_roster_log in location_day_roster_logs %}
+                <li class="list-group-item">
+                    <!--location_day_roster_log -->
+                    <a href="{% url 'roster-details' location.id location_day_roster_log %}">{{ location_day_roster_log }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>
+            No Day Roster Logs for this location.
+        </p>
+    {% endif %}
+{% endblock content %}

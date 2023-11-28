@@ -1,0 +1,45 @@
+{% extends "master.html" %}
+{% block title %}
+    Locations
+{% endblock title %}
+{% block content %}
+    <h1 id="my-desc">Locations</h1>
+    {% if locations %}
+        <table class="table" aria-describedby="my-desc">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>e-mail</th>
+                    <th>Telephone</th>
+                    <th>
+                        <!--Sign in command column -->&nbsp;
+                    </th>
+                    <th>
+                        <!--Sign out command column -->&nbsp;
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for location in locations %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'details' location.id %}">{{ location.name }}</a>
+                        </td>
+                        <td>{{ location.name }}</td>
+                        <td>{{ location.email }}</td>
+                        <td>{{ location.telephone }}</td>
+                        <td>
+                            <a class="btn btn-primary" href="{% url 'sign_in' location.id %}">Activate Sign in</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-danger" href="{% url 'sign_out' location.id %}">Activate Sign out</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No locations are available.</p>
+    {% endif %}
+{% endblock content %}

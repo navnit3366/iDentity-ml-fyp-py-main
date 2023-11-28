@@ -1,0 +1,51 @@
+classDiagram 
+direction RL
+
+class Location {
+    int id
+    String address
+    String description
+    String email
+    String name
+    String phone
+}
+class LocationPermission {
+    +Location locationId
+    +int userAccountId
+    }
+class Roster {
+    +int id
+    +int locationId
+    +string signInDateTime
+    +string signOutDateTime
+    +int userAccountId
+}
+class Group {
+    +int id
+    +string name
+    +string description
+}
+class UserAccount {
+    +int id
+    +string email
+    +boolean enabled
+    +boolean faceRecognitionEnabled
+    +string firstName
+    +boolean isTwin
+    +string lastName
+    +string password
+    +string telephone
+    +string username
+}
+class UserAccountGroup {
+    +int userAccountId
+    +int roleId
+}
+
+Location "1" *-- "1..*" LocationPermission : has
+LocationPermission "1..*" *-- "1" UserAccount : has
+Roster "1" *-- "1..*" Location : has
+UserAccount "1" *-- "1..*" Roster : has
+UserAccount "1" *-- "1..*" UserAccountGroup : has
+UserAccountGroup "1..*" -- "1" Group : has
+
